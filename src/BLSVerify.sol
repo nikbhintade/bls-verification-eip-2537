@@ -54,7 +54,7 @@ contract BLSVerify {
         g1Points[0] = NEGATED_G1_GENERATOR; // -G1
         g1Points[1] = pubKey; // Public key
 
-        g2Points[0] = signature; // Signature (already negated)
+        g2Points[0] = signature; // Signature
         g2Points[1] = hm; // H(m)
 
         // The pairing precompile (via BLS.pairing) returns true if the product equals one.

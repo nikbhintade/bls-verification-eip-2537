@@ -36,8 +36,7 @@ contract BLSVerifyTest is Test {
         BLS.G1Point memory pubKey = abi.decode(vm.parseJson(json, ".G1"), (BLS.G1Point));
         BLS.G2Point memory signature = abi.decode(vm.parseJson(json, ".G2"), (BLS.G2Point));
 
-        bytes memory message =
-            hex"54657374696e6720424c53205369676e61747572652077697468204549502d3235333720507265636f6d70696c65";
+        bytes memory message = abi.decode(vm.parseJson(json, ".Message"), (bytes));
 
         assertTrue(blsVerify.verifySignature(message, pubKey, signature));
     }

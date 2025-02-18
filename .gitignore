@@ -17,5 +17,5 @@ docs/
 # Soldeer
 /dependencies
 
-# Node
-node_modules
+# Python
+bls-py/points.json
