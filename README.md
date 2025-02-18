@@ -52,10 +52,10 @@ forge soldeer install
 
 Run tests (where you can see the signature getting verified):
 ```bash
-forge test -vvvv
+forge test -vvvv --odyssey
 ```
 
-## Issue
+## Remaining Work
 
-The smart contract verified the signature once but now it is giving me error `MapFp2ToG2Failed()`. Currently trying to resolve that error.
+Explaining BLS signatures and how verification works.
 
