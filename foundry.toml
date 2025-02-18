@@ -1,6 +1,22 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib"]
+libs = ["lib", "dependencies"]
+remappings = [
+    "forge-std/=dependencies/forge-std-1.9.6/src",
+    "solady/=dependencies/solady-0.1.8/",
+]
+fs_permissions = [{ access = "read", path = "./bls-py/points.json" }]
+
+
+[dependencies]
+forge-std = "1.9.6"
+solady = { version = "0.1.8", url = "https://github.com/Vectorized/solady/archive/refs/tags/v0.1.8.zip" }
+
+[soldeer]
+remappings_generate = true
+remappings_regenerate = false
+remappings_version = false
+remappings_location = "config"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

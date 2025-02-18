@@ -12,3 +12,10 @@ docs/
 
 # Dotenv file
 .env
+
+
+# Soldeer
+/dependencies
+
+# Node
+node_modules
