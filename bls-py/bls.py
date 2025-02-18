@@ -103,7 +103,7 @@ def main():
     data = {
         "G1": serialize_g1(g1_point),
         "G2": serialize_g2(g2_point),
-        "Message": message.hex()
+        "Message": message.decode()
     }
     
     with open("points.json", "w") as f:

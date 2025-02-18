@@ -32,16 +32,15 @@ contract BLSVerifyTest is Test {
     function setUp() public {
         blsVerify = new BLSVerify();
     }
+    struct Json {
+        BLS.G1Point pubKey;
+        BLS.G2Point signature;
+        string Message;
+    }
 
     function testContractVerifiesSignature() public view {
-        string memory json = vm.readFile("./bls-py/points.json");
-        BLS.G1Point memory pubKey = abi.decode(vm.parseJson(json, ".G1"), (BLS.G1Point));
-        BLS.G2Point memory signature = abi.decode(vm.parseJson(json, ".G2"), (BLS.G2Point));
-
-        // bytes memory message = abi.decode(vm.parseJson(json, ".Message"), (bytes));
-
-        bytes memory message =
-            hex"56657269666979696e6720424c53205369676e61747572652077697468204549502d3235333720507265636f6d70696c65";
-        assertTrue(blsVerify.verifySignature(message, pubKey, signature));
+        string memory file = vm.readFile("./bls-py/points.json");
+        Json memory data = abi.decode(vm.parseJson(file), (Json));
+        assertTrue(blsVerify.verifySignature(abi.encodePacked(data.Message), data.pubKey, data.signature));
     }
 }
