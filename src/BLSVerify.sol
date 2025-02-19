@@ -60,4 +60,33 @@ contract BLSVerify {
         // The pairing precompile (via BLS.pairing) returns true if the product equals one.
         return BLS.pairing(g1Points, g2Points);
     }
+
+    function verifyAggregate(
+        bytes[] memory messages,
+        BLS.G1Point[] memory pubKeys,
+        BLS.G2Point memory aggregatedSignature
+    ) public view returns (bool) {
+        require(messages.length == pubKeys.length, "Mismatched Array Length");
+
+        BLS.G1Point memory aggregatedPubkey;
+        BLS.G2Point memory aggregatedMessage;
+
+        for (uint256 i = 0; i < messages.length; i++) {
+            aggregatedPubkey = BLS.add(aggregatedPubkey, pubKeys[i]);
+            aggregatedMessage = BLS.add(aggregatedMessage, BLS.hashToG2(messages[i]));
+        }
+
+        // Prepare input arrays for the pairing check.
+        BLS.G1Point[] memory g1Points = new BLS.G1Point[](2);
+        BLS.G2Point[] memory g2Points = new BLS.G2Point[](2);
+
+        g1Points[0] = NEGATED_G1_GENERATOR; // -G1
+        g1Points[1] = aggregatedPubkey; // Public key
+
+        g2Points[0] = aggregatedSignature; // Signature
+        g2Points[1] = aggregatedMessage; // H(m)
+
+        // The pairing precompile (via BLS.pairing) returns true if the product equals one.
+        return BLS.pairing(g1Points, g2Points);
+    }
 }

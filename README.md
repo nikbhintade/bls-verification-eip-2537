@@ -2,6 +2,7 @@
 
 > [!WARNING]  
 > 🚧 **Work in Progress** 🚧  
+> Currently only single BLS Signatures are getting verified and verification for aggregated signatures is not working. Current deductions is issue is happening in script where I am aggregating signatures.
 
 This project implement on-chain BLS signature verification using EIP-2537 precompiles. It also uses Solady BLS.sol library to do the verification.
 
@@ -37,7 +38,7 @@ source .venv/bin/activate
 
 Finally we can run our bls.py to generate a signature
 ```bash
-uv run bls.py
+uv run bls-single.py
 cd ..
 ```
 

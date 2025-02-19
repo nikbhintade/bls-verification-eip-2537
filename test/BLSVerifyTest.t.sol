@@ -1,23 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-/**
- * Public Key (G1):
- *   x_a: 000000000000000000000000000000000904a2fe47c19c1356627e664ebd7154
- *   x_b: 9b7d58398c5591f472b1c988405c2fa1641e9364226db1ec48918d122127ca85
- *   y_a: 000000000000000000000000000000000dda7a9fa55fba1605e3f79bc4505fd6
- *   y_b: c3f793140d50cdeb8cfa9324c0db6e7b1e759667173e7e8a9dac92a0569976d1
- *
- * Negated Signature (G2):
- *   x_c0_a: 0000000000000000000000000000000007bc3460f3f42e284124654b9c394ba3
- *   x_c0_b: 79e8eea0e8e8defdb6f6e218c8b5c8c2c61d17771f02a316976621769447d754
- *   x_c1_a: 00000000000000000000000000000000124b979496ff0184a55fef6c6750659f
- *   x_c1_b: a23cde40bfbba86bd20abac090213d055a1db24f3673702a1d1b6496d6f225be
- *   y_c0_a: 0000000000000000000000000000000011276648dbef077ebfa9af752e92ff6d
- *   y_c0_b: 10d65ae338db6d9d37e929d8f625c45013b8810711eaca09fe0921ae6805827f
- *   y_c1_a: 0000000000000000000000000000000016d3d4308be18dd24f0d371a12ba9c3a
- *   y_c1_b: 74195fcf4c0a6b9c1e4db67f1ba46d6915ba02644c14808bbbba2d3fe39b8394
- */
 import {Test} from "forge-std/Test.sol";
 
 import {BLS} from "solady/src/utils/ext/ithaca/BLS.sol";
@@ -32,15 +15,64 @@ contract BLSVerifyTest is Test {
     function setUp() public {
         blsVerify = new BLSVerify();
     }
+
+    struct G1Point {
+        bytes32 x_a;
+        bytes32 x_b;
+        bytes32 y_a;
+        bytes32 y_b;
+    }
+
     struct Json {
+        string message;
         BLS.G1Point pubKey;
         BLS.G2Point signature;
-        string Message;
+    }
+
+    struct AggregatedJson {
+        BLS.G2Point aggregatedSignature;
+        BLS.G1Point[] pubKeys;
+        string[] messages;
+    }
+
+    struct Apple {
+        string color;
+        uint8 sourness;
+        uint8 sweetness;
+    }
+
+    struct FruitStall {
+        Apple[] apples;
+        string name;
     }
 
     function testContractVerifiesSignature() public view {
         string memory file = vm.readFile("./bls-py/points.json");
         Json memory data = abi.decode(vm.parseJson(file), (Json));
-        assertTrue(blsVerify.verifySignature(abi.encodePacked(data.Message), data.pubKey, data.signature));
+        assertTrue(blsVerify.verifySignature(abi.encodePacked(data.message), data.pubKey, data.signature));
+    }
+
+    function testContractVerifiesAggregatedSignature() public view {
+        string memory file = vm.readFile("./bls-py/points_aggregated.json");
+
+        bytes memory encodedPubKeys =
+            vm.parseJsonTypeArray(file, ".pubKeys", "G1Point(bytes32 x_a,bytes32 x_b,bytes32 y_a,bytes32 y_b)");
+        BLS.G1Point[] memory pubKeys = abi.decode(encodedPubKeys, (BLS.G1Point[]));
+
+        string[] memory messages = vm.parseJsonStringArray(file, ".messages");
+        bytes[] memory messagesInBytes = new bytes[](messages.length);
+
+        for (uint256 i = 0; i < messages.length; i++) {
+            messagesInBytes[i] = abi.encodePacked(messages[i]);
+        }
+
+        bytes memory encodedAggregatedSignature = vm.parseJsonType(
+            file,
+            ".aggregatedSignature",
+            "G2Point(bytes32 x_c0_a,bytes32 x_c0_b,bytes32 x_c1_a,bytes32 x_c1_b,bytes32 y_c0_a,bytes32 y_c0_b,bytes32 y_c1_a,bytes32 y_c1_b)"
+        );
+        BLS.G2Point memory aggregatedSignature = abi.decode(encodedAggregatedSignature, (BLS.G2Point));
+
+        assertTrue(blsVerify.verifyAggregate(messagesInBytes, pubKeys, aggregatedSignature));
     }
 }

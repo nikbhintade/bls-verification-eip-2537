@@ -1,0 +1,20 @@
+{
+    "apples": [
+        {
+            "sweetness": 7,
+            "sourness": 3,
+            "color": "Red"
+        },
+        {
+            "sweetness": 5,
+            "sourness": 5,
+            "color": "Green"
+        },
+        {
+            "sweetness": 9,
+            "sourness": 1,
+            "color": "Yellow"
+        }
+    ],
+    "name": "Fresh Fruit"
+}

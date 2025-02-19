@@ -6,7 +6,7 @@ remappings = [
     "forge-std/=dependencies/forge-std-1.9.6/src",
     "solady/=dependencies/solady-0.1.8/",
 ]
-fs_permissions = [{ access = "read", path = "./bls-py/points.json" }]
+fs_permissions = [{ access = "read", path = "./bls-py" }]
 
 
 [dependencies]

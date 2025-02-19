@@ -19,3 +19,4 @@ docs/
 
 # Python
 bls-py/points.json
+bls-py/points_aggregated.json
