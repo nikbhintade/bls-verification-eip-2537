@@ -38,7 +38,9 @@ source .venv/bin/activate
 
 Finally we can run our bls.py to generate a signature
 ```bash
-uv run bls-single.py
+uv run bls-single.py # generate single signature
+uv run bls-aggregate.py # generate aggregated signature
+
 cd ..
 ```
 

@@ -53,19 +53,17 @@ def main():
     aggregated_signature = bls.Aggregate(signatures)
     serialized_aggregated_signature = serialize_g2(G2Point.from_signature(aggregated_signature))
 
-    print(bls.AggregateVerify(pks, [s.encode('utf-8') for s in msg], aggregated_signature))
+    data = {
+        "aggregatedSignature": serialized_aggregated_signature,
+        "pubKeys": pubKeys,
+        "messages": messages
+    }
     
-    # data = {
-    #     "aggregatedSignature": serialized_aggregated_signature,
-    #     "pubKeys": pubKeys,
-    #     "messages": messages
-    # }
+    # Save serialized data to a JSON file
+    with open("points_aggregated.json", "w") as f:
+        json.dump(data, f, indent=4)
     
-    # # Save serialized data to a JSON file
-    # with open("points_aggregated.json", "w") as f:
-    #     json.dump(data, f, indent=4)
-    
-    # print(json.dumps(data, indent=4))
+    print(json.dumps(data, indent=4))
 
 if __name__ == "__main__":
     main()

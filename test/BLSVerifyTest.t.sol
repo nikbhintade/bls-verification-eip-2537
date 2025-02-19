@@ -63,6 +63,7 @@ contract BLSVerifyTest is Test {
         bytes[] memory messagesInBytes = new bytes[](messages.length);
 
         for (uint256 i = 0; i < messages.length; i++) {
+            console.logBytes(abi.encodePacked(messages[i]));
             messagesInBytes[i] = abi.encodePacked(messages[i]);
         }
 
