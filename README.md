@@ -2,7 +2,7 @@
 
 > [!WARNING]  
 > 🚧 **Work in Progress** 🚧  
-> Currently only single BLS Signatures are getting verified and verification for aggregated signatures is not working. Current deductions is issue is happening in script where I am aggregating signatures.
+> Explanation of how things works is remaining code is working.
 
 This project implement on-chain BLS signature verification using EIP-2537 precompiles. It also uses Solady BLS.sol library to do the verification.
 
