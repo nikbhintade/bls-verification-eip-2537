@@ -2,7 +2,8 @@
 
 > [!WARNING]  
 > 🚧 **Work in Progress** 🚧  
-> Explanation of how things works is remaining code is working.
+> Explanation of how things works is remaining, code is working correctly.
+
 
 This project implement on-chain BLS signature verification using EIP-2537 precompiles. It also uses Solady BLS.sol library to do the verification.
 
@@ -24,6 +25,9 @@ cd bls-verification-eip-2537
 ```
 
 ### Python project
+
+> [!NOTE]  
+> You don’t need to run Python part. After checking out the [Solady](https://github.com/Vectorized/solady/blob/main/test/ext/ithaca/BLS.t.sol) repo tests and how BLS tests are written there, I’ve updated the tests. But since I already wrote the Python code snippet, I don’t want to remove it. If I create a new project for the BLS snippet, I’ll take it from here, but for now, it’s staying.
 
 First we need to install the python dependencies
 ```bash

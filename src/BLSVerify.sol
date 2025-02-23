@@ -61,6 +61,28 @@ contract BLSVerify {
         return BLS.pairing(g1Points, g2Points);
     }
 
+    function verifySignature(BLS.G2Point memory message, BLS.G1Point memory pubKey, BLS.G2Point memory signature)
+        public
+        view
+        returns (bool)
+    {
+        // Compute H(m): map the message to a point in G2.
+        // BLS.G2Point memory hm = BLS.hashToG2(message);
+
+        // Prepare input arrays for the pairing check.
+        BLS.G1Point[] memory g1Points = new BLS.G1Point[](2);
+        BLS.G2Point[] memory g2Points = new BLS.G2Point[](2);
+
+        g1Points[0] = NEGATED_G1_GENERATOR; // -G1
+        g1Points[1] = pubKey; // Public key
+
+        g2Points[0] = signature; // Signature
+        g2Points[1] = message; // H(m)
+
+        // The pairing precompile (via BLS.pairing) returns true if the product equals one.
+        return BLS.pairing(g1Points, g2Points);
+    }
+
     function verifyAggregate(
         bytes[] memory messages,
         BLS.G1Point[] memory pubKeys,
